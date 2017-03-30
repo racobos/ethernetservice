@@ -1,0 +1,104 @@
+<config-template xmlns="http://tail-f.com/ns/config/1.0">
+  <devices xmlns="http://tail-f.com/ns/ncs">
+#        --> hub_device
+        <device>
+                         <name>{/hub_device}</name>
+                         <config>
+                           <interface xmlns="http://tail-f.com/ned/cisco-ios-xr">
+                             <GigabitEthernet-subinterface>
+                               <GigabitEthernet>
+                                 <id>{/local_interface}</id>
+                                 <encapsulation>
+                                   <dot1q>
+                                     <vlan-id>{/vlan_id}</vlan-id>
+                                   </dot1q>
+                                 </encapsulation>
+                                 <rewrite>
+                                   <ingress>
+                                     <tag>
+                                       <pop>1</pop>
+                                       <mode>symmetric</mode>
+                                     </tag>
+                                   </ingress>
+                                 </rewrite>
+                               </GigabitEthernet>
+                             </GigabitEthernet-subinterface>
+                             <BVI>
+                               <id>{/routed_interface}</id>
+                               <ipv4>
+                                 <address>
+                                   <ip>{/routed_ip_address}</ip>
+                                   <mask>255.255.255.0</mask>
+                                 </address>
+                               </ipv4>
+                             </BVI>
+                           </interface>
+                           <l2vpn xmlns="http://tail-f.com/ned/cisco-ios-xr">
+                             <bridge>
+                               <group>
+                                 <group-name>CarrierEthernet</group-name>
+                                 <bridge-domain>
+                                   <bridge-domain-name>{/bridge_domain}</bridge-domain-name>
+                                   <neighbor>
+                                     <address>{/spoke_ip_address}</address>
+                                     <pw-id>{/pw_id}</pw-id>
+                                     <pw-class>mpls</pw-class>
+                                   </neighbor>
+                                 </bridge-domain>
+                               </group>
+                             </bridge>
+                           </l2vpn>
+                         </config>
+                       </device>
+
+#        --> spoke_device
+
+                       <device>
+                         <name>{/spoke_device}</name>
+                         <config>
+                           <interface xmlns="http://tail-f.com/ned/cisco-ios-xr">
+                             <GigabitEthernet-subinterface>
+                               <GigabitEthernet>
+                                 <id>{/spoke_interface}</id>
+                                 <mode>l2transport</mode>
+                                 <encapsulation>
+                                   <dot1q>
+                                     <vlan-id>{/vlan_id}</vlan-id>
+                                   </dot1q>
+                                 </encapsulation>
+                                 <rewrite>
+                                   <ingress>
+                                     <tag>
+                                       <pop>1</pop>
+                                       <mode>symmetric</mode>
+                                     </tag>
+                                   </ingress>
+                                 </rewrite>
+                               </GigabitEthernet>
+                             </GigabitEthernet-subinterface>
+                           </interface>
+                           <l2vpn xmlns="http://tail-f.com/ned/cisco-ios-xr">
+                             <pw-class>
+                               <name>MPLS</name>
+                             </pw-class>
+                             <xconnect>
+                               <group>
+                                 <name>CarrierEthernet</name>
+                                 <p2p>
+                                   <name>{/bridge_domain}</name>
+                                   <interface>
+                                     <name>{/spoke_interface}</name>
+                                   </interface>
+                                   <neighbor>
+                                     <address>{/hub_ip_address}</address>
+                                     <pw-id>pw_id</pw-id>
+                                     <ip-version>ipv4</ip-version>
+                                   </neighbor>
+                                 </p2p>
+                               </group>
+                             </xconnect>
+                           </l2vpn>
+                         </config>
+                       </device>
+  </devices>
+</config-template>
