@@ -36,12 +36,24 @@ module multipoint {
         }
       }
 
+      leaf hub_ip_address {
+        type ietf-inet-types;
+      }
+
       leaf local_interface {
         type string;
       }
 
       leaf vlan_id {
         type string;
+      }
+
+      leaf routed_interface {
+        type uint32;
+      }
+
+      leaf routed_ip_address {
+        type ietf-inet-types;
       }
 
       list spokes {
@@ -52,6 +64,10 @@ module multipoint {
         }
 
         leaf spoke_device {
+          type string;
+        }
+
+        leaf spoke_ip_address {
           type string;
         }
 
