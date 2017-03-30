@@ -1,0 +1,65 @@
+module multipoint {
+
+  namespace "http://com/example/multipoint";
+  prefix multipoint;
+
+  import ietf-inet-types {
+    prefix inet;
+  }
+
+  import tailf-ncs {
+    prefix ncs;
+  }
+
+   import tailf-common {
+     prefix tailf;
+   }
+
+  augment /ncs:services {
+    list multipoint {
+      key vpls_name;
+
+      uses ncs:service-data;
+      ncs:servicepoint multipoint-servicepoint;
+
+      leaf vpls_name {
+        type string;
+      }
+
+      leaf bridge_domain {
+        type string;
+      }
+
+      leaf hub_device {
+        type leafref {
+          path "/ncs:devices/ncs:device/ncs:name";
+        }
+      }
+
+      leaf local_interface {
+        type string;
+      }
+
+      leaf vlan_id {
+        type string;
+      }
+
+      list spokes {
+        key pw_id;
+
+        leaf pw_id {
+          type string;
+        }
+
+        leaf spoke_device {
+          type string;
+        }
+
+        leaf spoke_interface {
+          type string;
+        }
+
+      }
+    }
+  }
+}

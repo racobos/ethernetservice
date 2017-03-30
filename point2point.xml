@@ -1,0 +1,65 @@
+<config-template xmlns="http://tail-f.com/ns/config/1.0"
+                 servicepoint="l2vpn">
+  <devices xmlns="http://tail-f.com/ns/ncs">
+      <device>
+        <name>{/device1}</name>
+        <config>
+          <interface xmlns="http://tail-f.com/ned/cisco-ios-xr">
+            <GigabitEthernet-subinterface>
+              <GigabitEthernet>
+                <id>{/intf-number1}</id>
+                <mode>l2transport</mode>
+              </GigabitEthernet>
+            </GigabitEthernet-subinterface>
+          </interface>
+          <l2vpn xmlns="http://tail-f.com/ned/cisco-ios-xr">
+            <xconnect>
+              <group>
+                <name>Group1</name>
+                <p2p>
+                  <name>{/name}</name>
+                  <interface>
+                    <name>{/intf-number1}</name>
+                  </interface>
+                  <neighbor>
+                    <address>{/remote-ip1}</address>
+                    <pw-id>{/pw-id}</pw-id>
+                  </neighbor>
+                </p2p>
+              </group>
+            </xconnect>
+          </l2vpn>
+        </config>
+      </device>
+      <device>
+        <name>{/device2}</name>
+        <config>
+          <interface xmlns="http://tail-f.com/ned/cisco-ios-xr">
+            <GigabitEthernet-subinterface>
+              <GigabitEthernet>
+                <id>{/intf-number2}</id>
+                <mode>l2transport</mode>
+              </GigabitEthernet>
+            </GigabitEthernet-subinterface>
+          </interface>
+          <l2vpn xmlns="http://tail-f.com/ned/cisco-ios-xr">
+            <xconnect>
+              <group>
+                <name>Group1</name>
+                <p2p>
+                  <name>{/name}</name>
+                  <interface>
+                    <name>{/intf-number2}</name>
+                  </interface>
+                  <neighbor>
+                    <address>{/remote-ip2}</address>
+                    <pw-id>{/pw-id}</pw-id>
+                  </neighbor>
+                </p2p>
+              </group>
+            </xconnect>
+          </l2vpn>
+        </config>
+      </device>
+    </devices>
+</config-template>
